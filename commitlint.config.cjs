@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+
 const Configuration = {
     extends: ['@commitlint/config-conventional'],
     parserPreset: 'conventional-changelog-atom',
@@ -8,20 +8,20 @@ const Configuration = {
         'type-enum': [
             2,
             'always',
-            ['feat', 'fix', 'docs', 'style', 'refactor', 'test', 'revert'],
-        ],
+            ['feat', 'fix', 'docs', 'style', 'refactor', 'test', 'revert']
+        ]
     },
     ignores: [(commit) => commit === ''],
     defaultIgnores: true,
-    helpUrl: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint',
+    helpUrl:
+        'https://github.com/conventional-changelog/commitlint/#what-is-commitlint',
     prompt: {
         messages: {},
         questions: {
             type: {
-                description: 'please input type:',
-            },
-        },
-    },
+                description: 'please input type:'
+            }
+        }
+    }
 };
 module.exports = Configuration;
-//# sourceMappingURL=commitlint.config.js.map
