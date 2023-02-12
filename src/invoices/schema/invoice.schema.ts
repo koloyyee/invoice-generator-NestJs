@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import {
-  ICustomer,
-  IInvoice,
-  IIssuer
+    ICustomer,
+    IInvoice,
+    IIssuer,
 } from 'src/invoices/interfaces/invoice.interface';
 
 export type InvoiceDocument = HydratedDocument<IInvoice>;
@@ -34,28 +34,28 @@ class Issuer {
 export const IssuerSchema = SchemaFactory.createForClass(Issuer);
 
 @Schema()
-class Client {
+class Customer {
     @Prop({ required: true })
     name: string;
 
     @Prop({ required: true })
     address: string;
 }
-export const ClientSchema = SchemaFactory.createForClass(Client);
+export const CustomerSchema = SchemaFactory.createForClass(Customer);
 
 @Schema()
 class Item {
     @Prop({ required: true })
-    itemName: string;
+    name: string;
 
     @Prop({ required: true })
-    itemPrice: number;
+    price: number;
 
     @Prop({ required: true })
-    itemQuantity: number;
+    quantity: number;
 
     @Prop({ required: true })
-    itemSubtotal: number;
+    subtotal: number;
 }
 export const ItemSchema = SchemaFactory.createForClass(Item);
 
@@ -72,15 +72,15 @@ export class Invoice {
     invoiceId: string;
 
     @Prop()
-    invoiceDate: string;
+    createdDate: string;
 
     @Prop()
-    invoiceDueDate: string;
+    dueDate: string;
 
     @Prop({ type: IssuerSchema })
     issuer: IIssuer;
 
-    @Prop({ type: ClientSchema })
+    @Prop({ type: CustomerSchema })
     client: ICustomer;
 
     @Prop({ type: [ItemSchema] })

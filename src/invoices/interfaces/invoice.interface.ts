@@ -26,8 +26,8 @@ export interface ICustomer {
 }
 
 export interface IItem {
-    itemName: string;
-    itemPrice: number;
-    itemQuantity: number;
-    itemSubtotal: number;
+    name: string;
+    price: number;
+    quantity: number;
+    subtotal: number;
 }
