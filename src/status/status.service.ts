@@ -35,13 +35,18 @@ export class StatusService {
         return doc;
     }
 
-    async latePaymentClients() {
+    async latePaymentClients(filter) {
         // business logic on
         // 1. client who's due date passed today.
         // 2. client name
         // 3. address
         // 4. totalAmount
+        console.log(filter);
         return null;
+    }
+
+    async findTotalRevenue() {
+        const revenue = await this.invoiceModel.aggregate();
     }
 
     update(id: number, updateStatusDto: UpdateStatusDto) {

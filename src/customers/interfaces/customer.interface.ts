@@ -1,5 +1,6 @@
-export interface Customer {
+export interface ICustomer {
   name: string;
-  age: number;
-  nationality: string;
+  address: string;
+  email: string;
+  phone: string;
 }

@@ -1,54 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User, UserDocument } from 'src/users/schema/users.schema';
+import { Inject, Injectable } from '@nestjs/common';
+import { Db } from 'mongodb';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
-import { IUser } from './interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
-    constructor(
-        @InjectModel(User.name) private userModel: Model<UserDocument>
-    ) {}
+  constructor(@Inject('DATABASE_CONNECTION') private db: Db) {}
 
-    async create(createUserDto: CreateUserDto): Promise<IUser> {
-        const isUserExisted = await this.userModel
-            .find({ filter: createUserDto.name })
-            .exec();
-        if (isUserExisted) throw `User existed.`;
-        const result = await this.userModel.create(createUserDto);
-        return result;
-    }
+  async create(createUserDto: CreateUserDto) {
+    const collection = this.db.collection('users');
+    const user = await collection.findOne({ filter: createUserDto.name });
+    if (user) throw `User existed.`;
 
-    async findAll(): Promise<IUser[]> {
-        const users = this.userModel.find().exec();
+    const result = await collection.insertOne(createUserDto);
+    return result;
+  }
 
-        return users;
-    }
+  async findAll() {
+    return await this.db.collection('users').find().toArray();
+  }
 
-    /**
-     * @param {string} filter: { field: "value"}
-     * @returns {IUser}: user with correct username
-     */
-    async findOne(filter: object): Promise<IUser> {
-        const user = await this.userModel.findOne(filter).exec();
-        return user;
-    }
+  async findOne(filter: object) {
+    const collection = this.db.collection('users');
+    const user = await collection.findOne(filter);
+    return user;
+  }
 
-    async findOneById(userId: string): Promise<IUser> {
-        const user = await this.userModel.findOne({ id: userId }).exec();
-        return user;
-    }
+  async findOneById(userId: string) {
+    const collection = this.db.collection('users');
+    const user = await collection.findOne({ id: userId });
+    return user;
+  }
 
-    async updateOne(userId: string, updateUserDto: UpdateUserDto) {
-        const result = await this.userModel.updateOne(
-            { id: userId },
-            updateUserDto
-        );
-        return result;
-    }
-    async deleteOne(userId: string): Promise<any> {
-        const result = await this.userModel.deleteOne({ id: userId });
-        return result;
-    }
+  async update(userId: string, updateUserDto: UpdateUserDto) {
+    const collection = this.db.collection('users');
+    const result = await collection.updateOne(
+      { id: userId },
+      { $set: updateUserDto }
+    );
+    return result;
+  }
+  async deleteOne(userId: string): Promise<any> {
+    const collection = this.db.collection('users');
+    const result = await collection.deleteOne({ id: userId });
+    return result;
+  }
 }

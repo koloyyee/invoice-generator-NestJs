@@ -1,11 +1,11 @@
 import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
 } from '@nestjs/common';
 import { CreateStatusDto } from './dto/create-status.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
@@ -20,9 +20,24 @@ export class StatusController {
         return this.statusService.create(createStatusDto);
     }
 
-    @Get('/late_payment_clients')
-    findClietns() {
-        return this.statusService.latePaymentClients;
+    @Get(':filter')
+    findClients(@Param() param) {
+        const filter = new URLSearchParams(param.filter);
+        const query = {};
+
+        for (const [key, value] of filter.entries()) {
+            const obj = {};
+            obj[key] = value;
+            Object.assign(query, obj);
+        }
+
+        return this.statusService.latePaymentClients(query);
+    }
+
+    @Get('revenue')
+    async findTotalRevenue() {
+        const revenue = await this.statusService.findTotalRevenue();
+        return revenue;
     }
 
     @Get()

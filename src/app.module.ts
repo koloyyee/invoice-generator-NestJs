@@ -8,18 +8,18 @@ import { CustomersModule } from './customers/customer.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { logger } from './logger.middleware';
 import { UsersModule } from './users/users.module';
-import { StatusModule } from './status/status.module';
+import { DbModule } from './db/db.module';
 
 dotenv.config();
 
 @Module({
   imports: [
     CustomersModule,
-    MongooseModule.forRoot(`${process.env.DB_CONN_STRING}`),
     InvoicesModule,
     AuthModule,
     UsersModule,
-    StatusModule,
+    MongooseModule.forRoot(`${process.env.DB_CONN_STRING}`),
+    DbModule,
   ],
   controllers: [AppController],
 })

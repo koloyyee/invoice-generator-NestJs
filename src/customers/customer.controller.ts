@@ -1,67 +1,94 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    ForbiddenException,
-    Get,
-    HttpCode,
-    HttpException,
-    HttpStatus,
-    Param,
-    Post,
-    Put,
-} from "@nestjs/common";
-import { CustomerService } from "src/customers/customer.service";
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
+import { CustomerService } from 'src/customers/customer.service';
 import {
-    CreateCustomerDto,
-    UpdateCustomerDto,
-} from "src/customers/dto/customer.dto";
-import { Customer } from "src/customers/interfaces/customer.interface";
+  CreateCustomerDto,
+  UpdateCustomerDto,
+} from 'src/customers/dto/customer.dto';
+import { ICustomer } from 'src/customers/interfaces/customer.interface';
 
-@Controller("customers")
+@Controller('customers')
 export class CustomerController {
-    constructor(private customerService: CustomerService) { }
+  constructor(private customerService: CustomerService) {}
 
-    @Get()
-    async findAll(): Promise<Customer[]> {
-        try {
-            return this.customerService.findAll();
-        } catch (error) {
-            throw new HttpException(
-                {
-                    status: HttpStatus.FORBIDDEN,
-                    error: "This is a custom message",
-                },
-                HttpStatus.FORBIDDEN,
-                {
-                    cause: error,
-                },
-            );
+  @Get('all')
+  async findAll(): Promise<ICustomer[]> {
+    try {
+      return this.customerService.findAll();
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'This is a custom message',
+        },
+        HttpStatus.FORBIDDEN,
+        {
+          cause: error,
         }
+      );
     }
+  }
 
-    @Get(":id")
-    @HttpCode(200)
-    findOne(@Param("id") id: string): string {
-        return `Find all customers with id: ${id}`;
-    }
+  @Get()
+  @HttpCode(200)
+  async findOne(@Query() query) {
+    const queryObj = new URLSearchParams(query);
 
-    @Post()
-    async create(@Body() createCustomerDto: CreateCustomerDto) {
-        // this.customerService.create(createCustomerDto);
-        throw new ForbiddenException();
+    let field = '';
+    let pattern = '';
+    for (const [key, value] of queryObj) {
+      field = key;
+      pattern = value;
     }
+    try {
+      const customers = await this.customerService.findSome(field, pattern);
+      console.log(customers);
+      return customers;
+    } catch (error) {
+      console.error(error.message);
+      return error;
+    }
+  }
 
-    @Put(":id")
-    update(
-        @Param("id") id: string,
-        @Body() updateCustomerDto: UpdateCustomerDto,
-    ) {
-        return `update ${id} with ${updateCustomerDto}`;
+  @Post()
+  async create(@Body() createCustomerDto: CreateCustomerDto) {
+    try {
+      return await this.customerService.create(createCustomerDto);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.errmsg,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        {
+          cause: error.errmsg,
+        }
+      );
     }
+  }
 
-    @Delete(":id")
-    remove(@Param("id") id: string) {
-        return `This action removes a #${id} cat`;
-    }
+  @Put(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateCustomerDto: UpdateCustomerDto
+  ) {
+    return `update ${id} with ${updateCustomerDto}`;
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return `This action removes a #${id} cat`;
+  }
 }

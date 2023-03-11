@@ -1,11 +1,13 @@
 export class CreateCustomerDto {
   name: string;
-  age: number;
-  nationality: string;
+  address: string;
+  email: string;
+  phone: string;
 }
 
 export class UpdateCustomerDto {
   name: string;
-  age: number;
-  nationality: string;
+  address: string;
+  email: string;
+  phone: string;
 }

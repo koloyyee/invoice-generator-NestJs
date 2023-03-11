@@ -7,11 +7,10 @@ import { UsersService } from 'src/users/users.service';
 export class AuthService {
   constructor(
     private userService: UsersService,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
-    console.log(username);
     const user = await this.userService.findOne({ username: username });
     const isMatch = await bcrypt.compare(password, user.password);
 

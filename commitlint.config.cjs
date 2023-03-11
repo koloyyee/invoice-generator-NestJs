@@ -7,7 +7,16 @@ const Configuration = {
         'type-enum': [
             2,
             'always',
-            ['feat', 'fix', 'docs', 'style', 'refactor', 'test', 'revert'],
+            [
+                'feat',
+                'fix',
+                'docs',
+                'style',
+                'refactor',
+                'test',
+                'revert',
+                'breaking',
+            ],
         ],
         'header-max-length': [1, 'always', 72],
         'subject-full-stop': [1, 'always', '.'],
