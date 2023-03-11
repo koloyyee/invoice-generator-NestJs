@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { InvoiceDocument } from 'invoices/schema/invoice.schema';
 import { Model } from 'mongoose';
-import { InvoiceDocument } from 'src/invoices/schema/invoice.schema';
 import { Invoice } from '../invoices/schema/invoice.schema';
 import { CreateStatusDto } from './dto/create-status.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
@@ -14,46 +14,46 @@ import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Injectable()
 export class StatusService {
-    constructor(
-        @InjectModel(Invoice.name) private invoiceModel: Model<InvoiceDocument>
-    ) {}
+  constructor(
+    @InjectModel(Invoice.name) private invoiceModel: Model<InvoiceDocument>
+  ) {}
 
-    create(createStatusDto: CreateStatusDto) {
-        return 'This action adds a new status';
-    }
+  create(createStatusDto: CreateStatusDto) {
+    return 'This action adds a new status';
+  }
 
-    findInvoicesStatus() {
-        const doc = this.invoiceModel.aggregate([
-            {
-                $group: {
-                    _id: '$status',
-                    count: { $sum: 1 },
-                },
-            },
-        ]);
+  findInvoicesStatus() {
+    const doc = this.invoiceModel.aggregate([
+      {
+        $group: {
+          _id: '$status',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
 
-        return doc;
-    }
+    return doc;
+  }
 
-    async latePaymentClients(filter) {
-        // business logic on
-        // 1. client who's due date passed today.
-        // 2. client name
-        // 3. address
-        // 4. totalAmount
-        console.log(filter);
-        return null;
-    }
+  async latePaymentClients(filter) {
+    // business logic on
+    // 1. client who's due date passed today.
+    // 2. client name
+    // 3. address
+    // 4. totalAmount
+    console.log(filter);
+    return null;
+  }
 
-    async findTotalRevenue() {
-        const revenue = await this.invoiceModel.aggregate();
-    }
+  async findTotalRevenue() {
+    const revenue = await this.invoiceModel.aggregate();
+  }
 
-    update(id: number, updateStatusDto: UpdateStatusDto) {
-        return `This action updates a #${id} status`;
-    }
+  update(id: number, updateStatusDto: UpdateStatusDto) {
+    return `This action updates a #${id} status`;
+  }
 
-    remove(id: number) {
-        return `This action removes a #${id} status`;
-    }
+  remove(id: number) {
+    return `This action removes a #${id} status`;
+  }
 }

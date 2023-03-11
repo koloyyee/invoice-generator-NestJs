@@ -1,4 +1,4 @@
-import { ICustomer } from 'src/customers/interfaces/customer.interface';
+import { ICustomer } from 'customers/interfaces/customer.interface';
 
 export interface IInvoice {
   invoiceId?: string;

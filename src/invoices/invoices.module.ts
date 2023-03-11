@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DbModule } from 'src/db/db.module';
+import { DbModule } from 'db/db.module';
 import { InvoicesController } from './invoices.controller';
 import { InvoicesService } from './invoices.service';
 

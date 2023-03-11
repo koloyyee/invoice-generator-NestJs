@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IInvoice } from 'invoices/interfaces/invoice.interface';
 import { HydratedDocument, SchemaTypes, Types } from 'mongoose';
-import { IInvoice } from 'src/invoices/interfaces/invoice.interface';
 
 export type InvoiceDocument = HydratedDocument<IInvoice>;
 

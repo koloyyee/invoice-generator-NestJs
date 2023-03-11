@@ -11,12 +11,12 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { CustomerService } from 'src/customers/customer.service';
+import { CustomerService } from 'customers/customer.service';
 import {
   CreateCustomerDto,
   UpdateCustomerDto,
-} from 'src/customers/dto/customer.dto';
-import { ICustomer } from 'src/customers/interfaces/customer.interface';
+} from 'customers/dto/customer.dto';
+import { ICustomer } from 'customers/interfaces/customer.interface';
 
 @Controller('customers')
 export class CustomerController {
